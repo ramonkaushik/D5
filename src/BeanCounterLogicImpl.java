@@ -153,8 +153,13 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 				} else {
 					halfLastSlot = this.slots[j].size() / 2;
 				}
-				for (int k = 0; k < halfLastSlot - 1; k++) {
+				//cant half one and use it as an iteration
+				if (this.getSlotBeanCount(j) == 1) {
 					this.slots[j].remove();
+				} else {
+					for (int k = 0; k < halfLastSlot - 1; k++) {
+						this.slots[j].remove();
+					}
 				}
 			} else {
 				//not the last slot
@@ -193,9 +198,14 @@ public class BeanCounterLogicImpl implements BeanCounterLogic {
 				} else {
 					halfLastSlot = this.slots[j].size() / 2;
 				}
-				for (int k = 0; k < halfLastSlot - 1; k++) {
+				//if the value in the slot is equal to 1, just remove the bean 
+				if (this.getSlotBeanCount(j) == 1) {
 					this.slots[j].remove();
-				}
+				} else { //else u gotta half the other beans 
+					for (int k = 0; k < halfLastSlot - 1; k++) {
+						this.slots[j].remove();
+					}
+				}	
 			} else {
 				//not the last slot
 				this.slots[j].clear();
