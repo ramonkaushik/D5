@@ -298,7 +298,47 @@ public class BeanCounterLogicTest {
 		for (int i = 0; i < slotCount; i++) {
 			dataSet2[i] = logic.getSlotBeanCount(i);
 		}
-		assertArrayEquals(failString, dataSet1, dataSet2);
+		if (!isLuck) {
+			assertArrayEquals(failString, dataSet1, dataSet2);
+		}
 		//new invariant: if it is in luck mode AND skill mode
+	}
+
+	/**
+	 * Test case for void repeat().
+	 * Preconditions: None.
+	 * Execution steps: Call logic.reset(beans).
+	 *                  Call logic.advanceStep() in a loop until it returns false (the machine terminates).
+	 *                  Call logic.repeat();
+	 *                  Call logic.advanceStep() in a loop until it returns false (the machine terminates).
+	 * Invariants: If the machine is operating in luck mode,
+	 *             bean count in each slot is identical after the first run and second run of the machine. 
+	 */
+	@Test
+	public void testRepeatForLuck() {
+		// TODO: Implement
+		logic.reset(beans);
+		boolean hasMachineTerminated = true;
+		int[] dataSet1 = new int[slotCount];
+		int[] dataSet2 = new int[slotCount];
+		while (hasMachineTerminated) {
+			hasMachineTerminated = logic.advanceStep();
+		}
+		for (int i = 0; i < slotCount; i++) {
+			dataSet1[i] = logic.getSlotBeanCount(i);
+		}
+		//testing the repeat now and going to fill second dataset for comparison
+		logic.repeat();
+		hasMachineTerminated = true;
+		while (hasMachineTerminated) {
+			hasMachineTerminated = logic.advanceStep();
+		}
+		
+		for (int i = 0; i < slotCount; i++) {
+			dataSet2[i] = logic.getSlotBeanCount(i);
+		}
+		if (isLuck) {
+			assertArrayEquals(failString, dataSet1, dataSet2);
+		}
 	}
 }
